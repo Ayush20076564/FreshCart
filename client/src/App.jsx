@@ -6,15 +6,18 @@ import Products from "./pages/Products";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
-import NotFound from "./pages/NotFound";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
 import AdminProducts from "./pages/AdminProducts";
 import AdminRoute from "./components/common/AdminRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="app-shell">
         <AppNavbar />
+
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -22,6 +25,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success/:orderId" element={<OrderSuccess />} />
 
             <Route
               path="/admin"
@@ -35,6 +40,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+
         <Footer />
       </div>
     </BrowserRouter>

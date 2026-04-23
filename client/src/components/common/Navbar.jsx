@@ -15,6 +15,8 @@ function AppNavbar() {
   const { cartCount } = useCartContext();
   const navigate = useNavigate();
 
+  const isAdmin = userProfile?.role === "admin";
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -54,16 +56,32 @@ function AppNavbar() {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link fw-medium" to="/products">
-                Products
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link fw-medium" to="/cart">
-                Cart
-              </NavLink>
-            </li>
+
+            {!isAdmin && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link fw-medium" to="/products">
+                    Products
+                  </NavLink>
+                </li>
+
+                {currentUser && (
+                  <li className="nav-item">
+                    <NavLink className="nav-link fw-medium" to="/cart">
+                      Cart
+                    </NavLink>
+                  </li>
+                )}
+              </>
+            )}
+
+            {isAdmin && (
+              <li className="nav-item">
+                <NavLink className="nav-link fw-medium" to="/admin">
+                  Admin
+                </NavLink>
+              </li>
+            )}
           </ul>
 
           <div className="d-flex align-items-center gap-2 flex-wrap">
@@ -90,7 +108,7 @@ function AppNavbar() {
                   Hi, {userProfile?.firstName || "User"}
                 </span>
 
-                {userProfile?.role === "admin" && (
+                {isAdmin && (
                   <NavLink
                     to="/admin"
                     className="btn btn-warning rounded-pill px-3"
@@ -110,10 +128,12 @@ function AppNavbar() {
               </>
             )}
 
-            <NavLink to="/cart" className="btn btn-cart rounded-pill px-3">
-              <FaShoppingCart className="me-2" />
-              Cart {cartCount > 0 ? `(${cartCount})` : ""}
-            </NavLink>
+            {currentUser && !isAdmin && (
+              <NavLink to="/cart" className="btn btn-cart rounded-pill px-3">
+                <FaShoppingCart className="me-2" />
+                Cart {cartCount > 0 ? `(${cartCount})` : ""}
+              </NavLink>
+            )}
           </div>
         </div>
       </div>
