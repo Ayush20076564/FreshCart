@@ -48,6 +48,9 @@ function Cart() {
                       <div className="col-md-4">
                         <h5 className="mb-1 fw-bold">{item.name}</h5>
                         <p className="text-muted mb-0">{item.category}</p>
+                        <small className="text-success fw-semibold">
+                          {item.stock} available
+                        </small>
                       </div>
 
                       <div className="col-md-2">
@@ -60,6 +63,7 @@ function Cart() {
                           className="form-control"
                           value={item.qty}
                           min="1"
+                          max={item.stock}
                           onChange={(e) => updateQuantity(item.id, e.target.value)}
                         />
                       </div>

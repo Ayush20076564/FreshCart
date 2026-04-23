@@ -5,6 +5,9 @@ function ProductCard({ product }) {
   const fallbackImage = "https://via.placeholder.com/300x200?text=No+Image";
   const { addToCart } = useCartContext();
 
+  const stock = Number(product.stock || 0);
+  const isOutOfStock = stock <= 0;
+
   const handleAddToCart = () => {
     addToCart(product);
   };
@@ -31,15 +34,22 @@ function ProductCard({ product }) {
           {product.description}
         </p>
 
-        <div className="d-flex justify-content-between align-items-center mt-3">
+        <div className="mb-2">
+          <small className={isOutOfStock ? "text-danger fw-semibold" : "text-success fw-semibold"}>
+            {isOutOfStock ? "Out of stock" : `${stock} left in stock`}
+          </small>
+        </div>
+
+        <div className="d-flex justify-content-between align-items-center mt-2">
           <h6 className="mb-0 fw-bold text-success">€{product.price}</h6>
 
           <button
             className="btn btn-success rounded-pill px-3"
             onClick={handleAddToCart}
+            disabled={isOutOfStock}
           >
             <FaCartPlus className="me-2" />
-            Add
+            {isOutOfStock ? "Out" : "Add"}
           </button>
         </div>
       </div>

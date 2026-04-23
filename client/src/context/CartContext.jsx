@@ -6,10 +6,20 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
 
   const addToCart = (product) => {
+    if (Number(product.stock) <= 0) {
+      alert("This product is out of stock.");
+      return;
+    }
+
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
 
       if (existingItem) {
+        if (existingItem.qty >= Number(product.stock)) {
+          alert(`Only ${product.stock} item(s) available in stock.`);
+          return prevItems;
+        }
+
         return prevItems.map((item) =>
           item.id === product.id
             ? { ...item, qty: item.qty + 1 }
@@ -17,7 +27,7 @@ export function CartProvider({ children }) {
         );
       }
 
-      return [...prevItems, { ...product, qty: 1 }];
+      return [...prevItems, { ...product, stock: Number(product.stock), qty: 1 }];
     });
   };
 
@@ -30,9 +40,16 @@ export function CartProvider({ children }) {
     }
 
     setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === productId ? { ...item, qty: parsedQty } : item
-      )
+      prevItems.map((item) => {
+        if (item.id !== productId) return item;
+
+        if (parsedQty > Number(item.stock)) {
+          alert(`Only ${item.stock} item(s) available in stock.`);
+          return { ...item, qty: Number(item.stock) };
+        }
+
+        return { ...item, qty: parsedQty };
+      })
     );
   };
 
