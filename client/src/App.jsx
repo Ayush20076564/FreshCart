@@ -6,8 +6,9 @@ import Products from "./pages/Products";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Cart from "./pages/Cart";
-import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import AdminProducts from "./pages/AdminProducts";
+import AdminRoute from "./components/common/AdminRoute";
 
 function App() {
   return (
@@ -21,7 +22,16 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/admin" element={<Admin />} />
+
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminProducts />
+                </AdminRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -218,4 +218,9 @@ a {
   .auth-card {
     padding: 1.5rem;
   }
+
+  .product-image {
+  height: 200px;
+  object-fit: cover;
+}
 }
