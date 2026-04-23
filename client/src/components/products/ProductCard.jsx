@@ -1,7 +1,13 @@
 import { FaCartPlus } from "react-icons/fa";
+import { useCartContext } from "../../context/CartContext";
 
 function ProductCard({ product }) {
   const fallbackImage = "https://via.placeholder.com/300x200?text=No+Image";
+  const { addToCart } = useCartContext();
+
+  const handleAddToCart = () => {
+    addToCart(product);
+  };
 
   return (
     <div className="card product-card h-100 border-0 shadow-sm">
@@ -28,7 +34,10 @@ function ProductCard({ product }) {
         <div className="d-flex justify-content-between align-items-center mt-3">
           <h6 className="mb-0 fw-bold text-success">€{product.price}</h6>
 
-          <button className="btn btn-success rounded-pill px-3">
+          <button
+            className="btn btn-success rounded-pill px-3"
+            onClick={handleAddToCart}
+          >
             <FaCartPlus className="me-2" />
             Add
           </button>

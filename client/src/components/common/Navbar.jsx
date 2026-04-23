@@ -8,9 +8,11 @@ import {
 } from "react-icons/fa";
 import { useAuthContext } from "../../context/AuthContext";
 import { logoutUser } from "../../firebase/auth";
+import { useCartContext } from "../../context/CartContext";
 
 function AppNavbar() {
   const { currentUser, userProfile } = useAuthContext();
+  const { cartCount } = useCartContext();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -110,7 +112,7 @@ function AppNavbar() {
 
             <NavLink to="/cart" className="btn btn-cart rounded-pill px-3">
               <FaShoppingCart className="me-2" />
-              Cart
+              Cart {cartCount > 0 ? `(${cartCount})` : ""}
             </NavLink>
           </div>
         </div>
