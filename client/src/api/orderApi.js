@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api/orders";
+const BASE_URL = "/api/orders";
 
 export const placeOrder = async (orderData) => {
   const response = await axios.post(BASE_URL, orderData);
