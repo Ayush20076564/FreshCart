@@ -66,11 +66,19 @@ function AppNavbar() {
                 </li>
 
                 {currentUser && (
-                  <li className="nav-item">
-                    <NavLink className="nav-link fw-medium" to="/cart">
-                      Cart
-                    </NavLink>
-                  </li>
+                  <>
+                    <li className="nav-item">
+                      <NavLink className="nav-link fw-medium" to="/cart">
+                        Cart
+                      </NavLink>
+                    </li>
+
+                    <li className="nav-item">
+                      <NavLink className="nav-link fw-medium" to="/orders">
+                        Orders
+                      </NavLink>
+                    </li>
+                  </>
                 )}
               </>
             )}

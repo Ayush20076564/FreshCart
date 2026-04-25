@@ -10,6 +10,7 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import AdminProducts from "./pages/AdminProducts";
 import AdminRoute from "./components/common/AdminRoute";
+import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/orders" element={<Orders />} />
             <Route path="/order-success/:orderId" element={<OrderSuccess />} />
 
             <Route
