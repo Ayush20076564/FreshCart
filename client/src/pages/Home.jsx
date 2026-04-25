@@ -1,9 +1,31 @@
 import { Link } from "react-router-dom";
 import { FaLeaf, FaShippingFast, FaLock, FaShoppingBasket } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import ProductCard from "../components/products/ProductCard";
-import products from "../data/products";
+import { fetchProducts } from "../api/productApi";
+import { useAuthContext } from "../context/AuthContext";
 
 function Home() {
+  const { currentUser } = useAuthContext();
+
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    const loadFeaturedProducts = async () => {
+      try {
+        const data = await fetchProducts();
+        setFeaturedProducts(data.slice(0, 4));
+      } catch (error) {
+        console.error("Failed to load featured products:", error);
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
+
+    loadFeaturedProducts();
+  }, []);
+
   return (
     <>
       <section className="hero-section">
@@ -11,20 +33,29 @@ function Home() {
           <div className="row align-items-center g-4">
             <div className="col-lg-6">
               <span className="hero-badge">Fresh groceries, faster delivery</span>
+
               <h1 className="display-4 fw-bold hero-title mt-3">
                 Shop fresh and healthy with <span>FreshCart</span>
               </h1>
+
               <p className="lead text-muted mt-3">
                 Explore fruits, vegetables, dairy, snacks, and daily essentials with
                 a smooth modern shopping experience.
               </p>
+
               <div className="d-flex flex-wrap gap-3 mt-4">
                 <Link to="/products" className="btn btn-success btn-lg rounded-pill px-4">
                   Shop Now
                 </Link>
-                <Link to="/register" className="btn btn-outline-success btn-lg rounded-pill px-4">
-                  Create Account
-                </Link>
+
+                {!currentUser && (
+                  <Link
+                    to="/register"
+                    className="btn btn-outline-success btn-lg rounded-pill px-4"
+                  >
+                    Create Account
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -84,18 +115,25 @@ function Home() {
               <h2 className="fw-bold mb-1">Featured Products</h2>
               <p className="text-muted mb-0">Popular picks from our store</p>
             </div>
+
             <Link to="/products" className="btn btn-outline-success rounded-pill">
               View All
             </Link>
           </div>
 
-          <div className="row g-4">
-            {products.slice(0, 4).map((product) => (
-              <div className="col-sm-6 col-lg-3" key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          {loadingProducts ? (
+            <p className="text-center">Loading featured products...</p>
+          ) : featuredProducts.length > 0 ? (
+            <div className="row g-4">
+              {featuredProducts.map((product) => (
+                <div className="col-sm-6 col-lg-3" key={product.id}>
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted">No featured products available.</p>
+          )}
         </div>
       </section>
 
@@ -103,13 +141,26 @@ function Home() {
         <div className="container">
           <div className="cta-box text-center">
             <FaShoppingBasket className="cta-icon mb-3" />
-            <h2 className="fw-bold">Start shopping smarter today</h2>
+
+            <h2 className="fw-bold">
+              {currentUser ? "Continue your FreshCart shopping" : "Start shopping smarter today"}
+            </h2>
+
             <p className="text-muted">
-              Join FreshCart and enjoy a smooth grocery shopping experience.
+              {currentUser
+                ? "Browse fresh groceries and complete your next order with ease."
+                : "Join FreshCart and enjoy a smooth grocery shopping experience."}
             </p>
-            <Link to="/register" className="btn btn-success btn-lg rounded-pill px-4 mt-2">
-              Get Started
-            </Link>
+
+            {!currentUser ? (
+              <Link to="/register" className="btn btn-success btn-lg rounded-pill px-4 mt-2">
+                Get Started
+              </Link>
+            ) : (
+              <Link to="/products" className="btn btn-success btn-lg rounded-pill px-4 mt-2">
+                Continue Shopping
+              </Link>
+            )}
           </div>
         </div>
       </section>

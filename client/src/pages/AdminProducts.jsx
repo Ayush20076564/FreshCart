@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { fetchProducts } from "../api/productApi";
+import { uploadProductImage } from "../services/imageUploadService";
 
 const BASE_URL = "/api/products";
 
@@ -22,11 +23,14 @@ function AdminProducts() {
   const [error, setError] = useState("");
 
   const [form, setForm] = useState(initialFormState);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
 
   const loadProducts = async () => {
     try {
       setLoading(true);
       setError("");
+
       const data = await fetchProducts();
       setProducts(data);
     } catch (err) {
@@ -47,23 +51,83 @@ function AdminProducts() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (!selectedFile) {
+      setImageFile(null);
+      setImagePreview("");
+      return;
+    }
+
+    setImageFile(selectedFile);
+    setImagePreview(URL.createObjectURL(selectedFile));
+  };
+
   const resetForm = () => {
     setForm(initialFormState);
     setEditingId(null);
+    setImageFile(null);
+    setImagePreview("");
+  };
+
+  const validateForm = () => {
+    if (!form.name.trim()) {
+      return "Product name is required.";
+    }
+
+    if (!form.category.trim()) {
+      return "Category is required.";
+    }
+
+    if (!form.price || Number(form.price) <= 0) {
+      return "Price must be greater than 0.";
+    }
+
+    if (form.stock === "" || Number(form.stock) < 0) {
+      return "Stock cannot be negative.";
+    }
+
+    if (!form.description.trim()) {
+      return "Description is required.";
+    }
+
+    if (!editingId && !imageFile && !form.image) {
+      return "Product image is required.";
+    }
+
+    return "";
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setMessage("");
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
     try {
       setSubmitting(true);
 
+      let imageUrl = form.image;
+
+      if (imageFile) {
+        imageUrl = await uploadProductImage(imageFile);
+      }
+
       const payload = {
-        ...form,
+        name: form.name.trim(),
+        category: form.category.trim(),
         price: Number(form.price),
-        stock: Number(form.stock)
+        stock: Number(form.stock),
+        description: form.description.trim(),
+        image: imageUrl
       };
 
       if (editingId) {
@@ -77,7 +141,7 @@ function AdminProducts() {
       resetForm();
       await loadProducts();
     } catch (err) {
-      setError("Failed to save product.");
+      setError(err.message || "Failed to save product.");
     } finally {
       setSubmitting(false);
     }
@@ -85,6 +149,7 @@ function AdminProducts() {
 
   const handleEdit = (product) => {
     setEditingId(product.id);
+
     setForm({
       name: product.name || "",
       category: product.category || "",
@@ -94,17 +159,27 @@ function AdminProducts() {
       stock: product.stock || ""
     });
 
+    setImageFile(null);
+    setImagePreview(product.image || "");
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this product?");
-    if (!confirmed) return;
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
 
     try {
       setError("");
       setMessage("");
+
       await axios.delete(`${BASE_URL}/${id}`);
+
       setMessage("Product deleted successfully.");
       await loadProducts();
 
@@ -121,7 +196,8 @@ function AdminProducts() {
       <div className="page-header mb-4">
         <h1 className="fw-bold mb-1">Admin Product Management</h1>
         <p className="text-muted mb-0">
-          Manage FreshCart products, stock availability, pricing, and inventory updates.
+          Manage FreshCart products, stock availability, pricing, images, and
+          inventory updates.
         </p>
       </div>
 
@@ -151,19 +227,26 @@ function AdminProducts() {
 
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Category</label>
-                <input
-                  type="text"
+                <select
                   name="category"
-                  placeholder="Enter category"
-                  className="form-control"
+                  className="form-select"
                   value={form.category}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Select category</option>
+                  <option value="Fruits">Fruits</option>
+                  <option value="Vegetables">Vegetables</option>
+                  <option value="Dairy">Dairy</option>
+                  <option value="Bakery">Bakery</option>
+                  <option value="Beverages">Beverages</option>
+                  <option value="Snacks">Snacks</option>
+                  <option value="Household">Household</option>
+                </select>
               </div>
 
               <div className="col-md-4">
-                <label className="form-label fw-semibold">Price</label>
+                <label className="form-label fw-semibold">Price (€)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -190,17 +273,40 @@ function AdminProducts() {
               </div>
 
               <div className="col-md-4">
-                <label className="form-label fw-semibold">Image URL</label>
+                <label className="form-label fw-semibold">Product Image</label>
                 <input
-                  type="text"
-                  name="image"
-                  placeholder="Paste image URL"
+                  type="file"
+                  accept="image/*"
                   className="form-control"
-                  value={form.image}
-                  onChange={handleChange}
-                  required
+                  onChange={handleImageChange}
                 />
+                <small className="text-muted">
+                  Upload JPG, PNG, or WEBP image. Max 5MB.
+                </small>
               </div>
+
+              {(imagePreview || form.image) && (
+                <div className="col-12">
+                  <label className="form-label fw-semibold">Image Preview</label>
+                  <div>
+                    <img
+                      src={imagePreview || form.image}
+                      alt="Product preview"
+                      style={{
+                        width: "160px",
+                        height: "120px",
+                        objectFit: "cover",
+                        borderRadius: "12px",
+                        border: "1px solid #d9e2dc"
+                      }}
+                      onError={(e) => {
+                        e.target.src =
+                          "https://via.placeholder.com/160x120?text=No+Image";
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="col-12">
                 <label className="form-label fw-semibold">Description</label>
@@ -235,6 +341,7 @@ function AdminProducts() {
                     type="button"
                     className="btn btn-outline-secondary rounded-pill px-4"
                     onClick={resetForm}
+                    disabled={submitting}
                   >
                     Cancel Edit
                   </button>
@@ -258,6 +365,7 @@ function AdminProducts() {
               <table className="table align-middle">
                 <thead>
                   <tr>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Category</th>
                     <th>Price</th>
@@ -269,9 +377,30 @@ function AdminProducts() {
                 <tbody>
                   {products.map((product) => (
                     <tr key={product.id}>
+                      <td>
+                        <img
+                          src={
+                            product.image ||
+                            "https://via.placeholder.com/70x60?text=No+Image"
+                          }
+                          alt={product.name}
+                          style={{
+                            width: "70px",
+                            height: "60px",
+                            objectFit: "cover",
+                            borderRadius: "10px"
+                          }}
+                          onError={(e) => {
+                            e.target.src =
+                              "https://via.placeholder.com/70x60?text=No+Image";
+                          }}
+                        />
+                      </td>
+
                       <td className="fw-semibold">{product.name}</td>
                       <td>{product.category}</td>
-                      <td>€{product.price}</td>
+                      <td>€{Number(product.price).toFixed(2)}</td>
+
                       <td>
                         <span
                           className={
@@ -283,6 +412,7 @@ function AdminProducts() {
                           {product.stock} left
                         </span>
                       </td>
+
                       <td>
                         <div className="d-flex gap-2 flex-wrap">
                           <button
@@ -291,6 +421,7 @@ function AdminProducts() {
                           >
                             Edit
                           </button>
+
                           <button
                             className="btn btn-sm btn-outline-danger rounded-pill px-3"
                             onClick={() => handleDelete(product.id)}
@@ -302,7 +433,6 @@ function AdminProducts() {
                     </tr>
                   ))}
                 </tbody>
-
               </table>
             </div>
           )}
