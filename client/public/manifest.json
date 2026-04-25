@@ -1,0 +1,9 @@
+{
+  "short_name": "FreshCart",
+  "name": "FreshCart Grocery App",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#198754",
+  "background_color": "#ffffff"
+}

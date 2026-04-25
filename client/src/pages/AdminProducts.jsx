@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { fetchProducts } from "../api/productApi";
 
-const BASE_URL = "http://localhost:5000/api/products";
+const BASE_URL = "/api/products";
 
 const initialFormState = {
   name: "",
@@ -26,6 +26,7 @@ function AdminProducts() {
   const loadProducts = async () => {
     try {
       setLoading(true);
+      setError("");
       const data = await fetchProducts();
       setProducts(data);
     } catch (err) {
@@ -117,19 +118,17 @@ function AdminProducts() {
 
   return (
     <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <div>
-          <h2 className="fw-bold mb-1">Admin Product Management</h2>
-          <p className="text-muted mb-0">
-            Add, edit, and delete store products from one place.
-          </p>
-        </div>
+      <div className="page-header mb-4">
+        <h1 className="fw-bold mb-1">Admin Product Management</h1>
+        <p className="text-muted mb-0">
+          Manage FreshCart products, stock availability, pricing, and inventory updates.
+        </p>
       </div>
 
       {message && <div className="alert alert-success">{message}</div>}
       {error && <div className="alert alert-danger">{error}</div>}
 
-      <div className="card border-0 shadow-sm mb-5">
+      <div className="card border-0 shadow-sm mb-5 admin-card">
         <div className="card-body p-4">
           <h4 className="fw-bold mb-4">
             {editingId ? "Edit Product" : "Add New Product"}
@@ -219,7 +218,7 @@ function AdminProducts() {
               <div className="col-12 d-flex gap-2 flex-wrap">
                 <button
                   type="submit"
-                  className="btn btn-success"
+                  className="btn btn-success rounded-pill px-4"
                   disabled={submitting}
                 >
                   {submitting
@@ -234,7 +233,7 @@ function AdminProducts() {
                 {editingId && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary"
+                    className="btn btn-outline-secondary rounded-pill px-4"
                     onClick={resetForm}
                   >
                     Cancel Edit
@@ -246,7 +245,7 @@ function AdminProducts() {
         </div>
       </div>
 
-      <div className="card border-0 shadow-sm">
+      <div className="card border-0 shadow-sm admin-card">
         <div className="card-body p-4">
           <h4 className="fw-bold mb-4">Existing Products</h4>
 
@@ -266,23 +265,34 @@ function AdminProducts() {
                     <th style={{ minWidth: "160px" }}>Actions</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {products.map((product) => (
                     <tr key={product.id}>
-                      <td>{product.name}</td>
+                      <td className="fw-semibold">{product.name}</td>
                       <td>{product.category}</td>
                       <td>€{product.price}</td>
-                      <td>{product.stock}</td>
+                      <td>
+                        <span
+                          className={
+                            Number(product.stock) <= 5
+                              ? "badge rounded-pill bg-danger"
+                              : "badge rounded-pill badge-stock"
+                          }
+                        >
+                          {product.stock} left
+                        </span>
+                      </td>
                       <td>
                         <div className="d-flex gap-2 flex-wrap">
                           <button
-                            className="btn btn-sm btn-outline-primary"
+                            className="btn btn-sm btn-outline-primary rounded-pill px-3"
                             onClick={() => handleEdit(product)}
                           >
                             Edit
                           </button>
                           <button
-                            className="btn btn-sm btn-outline-danger"
+                            className="btn btn-sm btn-outline-danger rounded-pill px-3"
                             onClick={() => handleDelete(product.id)}
                           >
                             Delete
@@ -292,6 +302,7 @@ function AdminProducts() {
                     </tr>
                   ))}
                 </tbody>
+
               </table>
             </div>
           )}

@@ -95,7 +95,12 @@ function Checkout() {
   return (
     <section className="py-5">
       <div className="container">
-        <h1 className="fw-bold mb-4">Checkout</h1>
+        <div className="page-header mb-4">
+          <h1 className="fw-bold mb-1">Checkout</h1>
+          <p className="text-muted mb-0">
+            Review your cart, apply discounts, and complete your FreshCart order.
+          </p>
+        </div>
 
         {error && <div className="alert alert-danger">{error}</div>}
 

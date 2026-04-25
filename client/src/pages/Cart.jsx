@@ -15,12 +15,16 @@ function Cart() {
   if (cartItems.length === 0) {
     return (
       <section className="py-5">
-        <div className="container text-center">
-          <h1 className="fw-bold mb-3">Your Cart</h1>
-          <p className="text-muted">Your cart is currently empty.</p>
-          <Link to="/products" className="btn btn-success rounded-pill px-4">
-            Continue Shopping
-          </Link>
+        <div className="container">
+          <div className="card border-0 shadow-sm p-5 text-center">
+            <h1 className="fw-bold mb-3">Your Cart is Empty</h1>
+            <p className="text-muted">
+              Add fresh groceries from the products page to start your order.
+            </p>
+            <Link to="/products" className="btn btn-success rounded-pill px-4">
+              Browse Products
+            </Link>
+          </div>
         </div>
       </section>
     );
@@ -29,7 +33,12 @@ function Cart() {
   return (
     <section className="py-5">
       <div className="container">
-        <h1 className="fw-bold mb-4">Your Cart</h1>
+        <div className="page-header mb-4">
+          <h1 className="fw-bold mb-1">Your Cart</h1>
+          <p className="text-muted mb-0">
+            Review selected products, update quantities, and proceed to checkout.
+          </p>
+        </div>
 
         <div className="row g-4">
           <div className="col-lg-8">
@@ -85,7 +94,7 @@ function Cart() {
               </div>
             ))}
 
-            <button className="btn btn-outline-secondary" onClick={clearCart}>
+            <button className="btn btn-outline-secondary rounded-pill px-4" onClick={clearCart}>
               Clear Cart
             </button>
           </div>

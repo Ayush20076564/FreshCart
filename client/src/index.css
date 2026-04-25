@@ -60,6 +60,43 @@ a {
   color: white;
 }
 
+/* Shared */
+.page-header {
+  background: linear-gradient(135deg, #eef9f1, #ffffff);
+  padding: 2rem;
+  border-radius: 1.25rem;
+  border: 1px solid #e5f3e9;
+}
+
+.card,
+.auth-card,
+.feature-box,
+.cta-box,
+.summary-card {
+  border-radius: 1.25rem !important;
+}
+
+.btn {
+  font-weight: 600;
+}
+
+.alert {
+  border-radius: 1rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d9e2dc;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+}
+
 /* Hero */
 .hero-section {
   padding: 4rem 0 3rem;
@@ -111,9 +148,9 @@ a {
   color: #198754;
 }
 
-/* Product cards */
+/* Products */
 .product-card {
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -124,8 +161,9 @@ a {
 }
 
 .product-image {
-  height: 220px;
+  height: 210px;
   object-fit: cover;
+  background: #f1f5f2;
 }
 
 /* CTA */
@@ -155,21 +193,44 @@ a {
 
 /* Cart */
 .cart-item {
-  border-radius: 1rem;
+  border-radius: 1.25rem;
 }
 
 .cart-item-image {
-  width: 100%;
-  max-width: 90px;
+  width: 90px;
   height: 90px;
   object-fit: cover;
-  border-radius: 0.75rem;
+  border-radius: 0.9rem;
 }
 
 .summary-card {
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   position: sticky;
   top: 100px;
+}
+
+/* Admin */
+.admin-card {
+  border-radius: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.table thead th {
+  background: #eef9f1;
+  color: #14532d;
+  font-weight: 700;
+}
+
+.badge-stock {
+  background: #eef9f1;
+  color: #198754;
+  border: 1px solid #cfe9d8;
 }
 
 /* Footer */
@@ -191,20 +252,6 @@ a {
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Inputs */
-.form-control,
-.form-select {
-  border-radius: 0.85rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid #d9e2dc;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #198754;
-  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
-}
-
 /* Responsive */
 @media (max-width: 767px) {
   .hero-title {
@@ -219,8 +266,7 @@ a {
     padding: 1.5rem;
   }
 
-  .product-image {
-  height: 200px;
-  object-fit: cover;
-}
+  .page-header {
+    padding: 1.5rem;
+  }
 }
