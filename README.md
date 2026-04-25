@@ -230,7 +230,7 @@ This project was developed as an academic full-stack cloud application to demons
 ## 👤 Author
 
 **Ayush Sharma**  
-Student / Junior Developer  
+Developer  
 Focused on cloud development, full-stack applications, and cybersecurity.
 
 ***
