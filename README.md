@@ -1,26 +1,27 @@
-# 🛒 FreshCart
+# FreshCart
 
-FreshCart is a **cloud-based grocery e-commerce web application** designed to deliver a smooth online shopping experience for customers and efficient inventory management for administrators.
+FreshCart is a cloud-based grocery e-commerce web application designed to provide customers with a smooth online shopping experience and give administrators efficient tools for product and inventory management.
 
-## 📌 Project Overview
+## Overview
 
-FreshCart was developed as a **full-stack web application** that enables users to:
+FreshCart is a full-stack web application that allows users to:
 
-- Browse grocery products
-- Add and manage items in a shopping cart
-- Apply discount coupons
+- Browse grocery products by category
+- Search and filter products
+- Add, remove, and update cart items
+- Apply discount coupons during checkout
 - Place orders online
-- Receive invoice emails automatically
+- Receive automated invoice emails
+- View order history
 
-The platform also includes an **admin panel** for managing products and stock levels.
+The application also includes an admin panel for managing products, stock levels, and product images.
 
-***
-
-## ✨ Features
+## Features
 
 ### Customer Features
 - User registration and login
 - Browse products by category
+- Search and filter products
 - Add, remove, and update cart items
 - Apply discount coupons during checkout
 - Place orders and store order history
@@ -31,31 +32,30 @@ The platform also includes an **admin panel** for managing products and stock le
 - Update existing product details
 - Delete products
 - Manage stock levels
+- Upload product images through Firebase Storage
 
-***
-
-## 🧰 Tech Stack
+## Tech Stack
 
 ### Frontend
-- **React**
-- **Bootstrap**
+- React
+- Bootstrap
 
 ### Backend
-- **Node.js**
-- **Express.js**
-- **Firebase Functions**
+- Node.js
+- Express.js
+- Firebase Functions
 
-### Database & Services
-- **Cloud Firestore**
-- **Firebase Authentication**
-- **Firebase Hosting**
-- **Nodemailer**
+### Database and Services
+- Cloud Firestore
+- Firebase Authentication
+- Firebase Hosting
+- Firebase Storage
+- Nodemailer
+- Firebase Analytics
 
-***
+## System Architecture
 
-## 🏗️ System Architecture
-
-FreshCart follows a **three-tier architecture**:
+FreshCart follows a three-tier architecture:
 
 ```text
 User (Browser)
@@ -69,9 +69,7 @@ Firebase Functions (Node.js + Express APIs)
 Firestore Database
 ```
 
-***
-
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 FreshCart/
@@ -86,9 +84,7 @@ FreshCart/
 └── README.md
 ```
 
-***
-
-## 🔌 API Endpoints
+## API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -98,10 +94,10 @@ FreshCart/
 | `/api/products/:id` | DELETE | Delete a product |
 | `/api/orders` | POST | Place an order |
 | `/api/orders/user/:id` | GET | Retrieve user orders |
+| `/api/checkout` | POST | Process checkout, validate stock, apply coupons, and generate invoice |
+| `/api/health` | GET | Check backend service status |
 
-***
-
-## 🔐 Security Features
+## Security Features
 
 FreshCart includes multiple security measures:
 
@@ -109,13 +105,12 @@ FreshCart includes multiple security measures:
 - Role-based access control for admin and customer users
 - Backend input validation
 - Firestore security rules
+- Firebase Storage rules
 - CORS protection for trusted origins
 - Environment variables for sensitive credentials
 - HTTPS deployment via Firebase Hosting
 
-***
-
-## ⚙️ Installation and Setup
+## Installation and Setup
 
 ### 1. Clone the repository
 
@@ -126,13 +121,13 @@ cd freshcart
 
 ### 2. Install dependencies
 
-For frontend:
+For the frontend:
 
 ```bash
 npm install
 ```
 
-For Firebase functions:
+For Firebase Functions:
 
 ```bash
 cd functions
@@ -142,18 +137,19 @@ cd ..
 
 ### 3. Configure Firebase
 
-Create your Firebase project and enable:
+Create a Firebase project and enable:
 
 - Firebase Authentication
 - Cloud Firestore
 - Firebase Hosting
 - Firebase Functions
+- Firebase Storage
 
-Add your Firebase config in the appropriate project files.
+Add your Firebase configuration in the relevant project files.
 
 ### 4. Configure environment variables
 
-Create a `.env` file and add required secrets such as:
+Create a `.env` file and add required credentials such as:
 
 ```env
 EMAIL_USER=your-email@example.com
@@ -168,28 +164,23 @@ Start the frontend:
 npm start
 ```
 
-Run Firebase emulators or deploy functions as needed.
+Run Firebase emulators locally or deploy the functions as needed.
 
-***
+## Deployment
 
-## 🚀 Deployment
-
-FreshCart is intended to be deployed using **Firebase Hosting** and **Firebase Functions**.
-
-### Deploy the project
+FreshCart is intended to be deployed using Firebase Hosting and Firebase Functions.
 
 ```bash
 firebase deploy
 ```
 
 This deploys:
+
 - Frontend to Firebase Hosting
 - Backend APIs to Firebase Functions
-- Firestore rules and related Firebase configuration
+- Firestore rules and Firebase configuration
 
-***
-
-## 🧪 Testing
+## Testing
 
 The application was tested for:
 
@@ -200,21 +191,20 @@ The application was tested for:
 - Order placement and storage
 - Inventory updates
 - Email invoice delivery
+- Image upload functionality
+- Order history retrieval
 
-***
+## Future Improvements
 
-## 📈 Future Improvements
+- Integrate Stripe or PayPal for online payments
+- Add Firebase Storage optimization for product images
+- Implement order tracking
+- Build an analytics dashboard
+- Add smarter search and filtering
+- Introduce recommendation features
+- Improve low-stock alerts and category management
 
-- Integrate **Stripe** for online payments
-- Add **Firebase Storage** for product image uploads
-- Implement **order tracking**
-- Build an **analytics dashboard**
-- Add smarter **search and filtering**
-- Introduce **recommendation features**
-
-***
-
-## 🎓 Academic Purpose
+## Academic Purpose
 
 This project was developed as an academic full-stack cloud application to demonstrate:
 
@@ -222,19 +212,20 @@ This project was developed as an academic full-stack cloud application to demons
 - Cloud deployment using Firebase
 - RESTful API design
 - Authentication and access control
-- Database integration with Firestore
+- Firestore database integration
 - Practical software testing and evaluation
 
-***
-
-## 👤 Author
+## Authors
 
 **Ayush Sharma**  
-Developer  
-Focused on cloud development, full-stack applications, and cybersecurity.
+Developer
 
-***
+**Paul Oyinloye**  
+Developer
 
-## 📄 License
+**Abdulqowiy Adeniji**  
+Developer
 
-This project is for **educational and academic use**.
+## License
+
+This project is for educational and academic use.
