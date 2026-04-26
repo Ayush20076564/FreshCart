@@ -1,5 +1,6 @@
 # FreshCart
 
+
 FreshCart is a cloud-based grocery e-commerce web application designed to provide customers with a smooth online shopping experience and give administrators efficient tools for product and inventory management.
 
 ## Overview
@@ -225,6 +226,7 @@ Developer
 
 **Abdulqowiy Adeniji**  
 Developer
+
 
 ## License
 
