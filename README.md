@@ -224,7 +224,7 @@ Developer
 **Paul Oyinloye**  
 Developer
 
-**Abdulqowiy Adeniji**  
+**Abdulqowiy Adekola Adeniji**  
 Developer
 
 
