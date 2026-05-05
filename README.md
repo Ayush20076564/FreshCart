@@ -3,6 +3,10 @@
 
 FreshCart is a cloud-based grocery e-commerce web application designed to provide customers with a smooth online shopping experience and give administrators efficient tools for product and inventory management.
 
+##LIVE URL
+
+https://freshcart-20076564.web.app/
+
 ## Overview
 
 FreshCart is a full-stack web application that allows users to:
